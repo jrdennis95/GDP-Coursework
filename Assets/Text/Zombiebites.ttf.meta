@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: b377e313f1c7f84418b4cc3d02e2b04d
+timeCreated: 1512405903
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Zombiebites
+  fontNames:
+  - Zombiebites
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
