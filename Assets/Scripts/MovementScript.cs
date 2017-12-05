@@ -17,6 +17,8 @@ public class MovementScript : MonoBehaviour {
     private List<GameObject> activeHearts;
     private Vector3 offset;
     private Animator anim;
+    private bool dead;
+    public Image GameOverImage1, GameOverImage2;
     private float gamma;
     private float distancebetween;
     public float strafespeed;
@@ -26,14 +28,19 @@ public class MovementScript : MonoBehaviour {
     private int heartcount;
     private float jumpSpeed = 0.0f;
     private float gravity = 9.8f;
+    private float scale = 118f;
+    private float timer1, timer2, timer3 = 0;
+
     // Use this for initialization
     void Start () {
         control = GetComponent<CharacterController>();
         ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
         mob = GameObject.Find("Mob").GetComponent<MobMovement>();
+        //GameOverImage = GameObject.Find("GameOverImage").GetComponent<GameObject>();
         score = 0;
         heartcount = 3;
         gamma = 0;
+        dead = false;
         totalspeed = runspeed;
         canvas = GameObject.FindGameObjectWithTag("Canvas").transform;
         panel = GameObject.FindGameObjectWithTag("Panel").GetComponent<Image>();
@@ -51,8 +58,37 @@ public class MovementScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        totalspeed = runspeed + (score * 0.01f);
-        distancebetween = transform.position.z - mob.transform.position.z;
+        //Jumping
+        if (dead == false){
+            distancebetween = transform.position.z - mob.transform.position.z;
+            totalspeed = runspeed + (score * 0.01f);
+            if (Input.GetButtonDown("Jump") && control.isGrounded)
+            {
+                jumpSpeed = 5.0f;
+            }
+            else
+            {
+                jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
+            }
+            movement.x = Input.GetAxisRaw("Horizontal") * strafespeed;
+            movement.y = jumpSpeed;
+            movement.z = totalspeed;
+            control.Move(movement * Time.deltaTime);
+        }
+        else {
+            timer1 += Time.deltaTime;
+            if (timer1 > 2 && scale > 15)
+            {
+                timer2 += Time.deltaTime;
+                scale = scale - timer2 * 45;
+                GameOverImage1.rectTransform.localScale = new Vector3(1, 1, 1) * scale;
+            } else if(scale < 15)
+            {
+                Debug.Log(timer3);
+                timer3 += Time.deltaTime;
+                GameOverImage2.fillAmount += timer3;
+            }
+        }
         //UI
         panel.color = new Color(1, 0, 0, gamma);
         if (distancebetween > -1.5f)
@@ -61,23 +97,11 @@ public class MovementScript : MonoBehaviour {
         }
         else
         {
-            gamma = (distancebetween*-1)/1.5f - 0.8f;
+            gamma = (distancebetween * -1) / 1.5f - 0.8f;
         }
         UItext.text = score.ToString("D3");
-        //Jumping
-        if (Input.GetButtonDown("Jump") && control.isGrounded)
-        {
-            jumpSpeed = 5.0f;
-        } else
-        {
-            jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
-        }
-        movement.x = Input.GetAxisRaw("Horizontal") * strafespeed;
-        movement.y = jumpSpeed;
-        movement.z = totalspeed;
-        control.Move(movement * Time.deltaTime);
         //Collisions
-	}
+    }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -145,6 +169,7 @@ public class MovementScript : MonoBehaviour {
             {
                 mob.StopSpeed();
                 anim.SetBool("dead", true);
+                dead = true;
             }
             heartcount--;
             //HeartDisplay.RemoveHeart();
