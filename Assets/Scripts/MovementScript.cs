@@ -28,7 +28,7 @@ public class MovementScript : MonoBehaviour {
     private int heartcount;
     private float jumpSpeed = 0.0f;
     private float gravity = 9.8f;
-    private float scale = 118f;
+    private float scale;
     private float timer1, timer2, timer3 = 0;
 
     // Use this for initialization
@@ -39,7 +39,8 @@ public class MovementScript : MonoBehaviour {
         //GameOverImage = GameObject.Find("GameOverImage").GetComponent<GameObject>();
         score = 0;
         heartcount = 3;
-        gamma = 0;
+        gamma = 0; 
+        scale = 118f;
         dead = false;
         totalspeed = runspeed;
         canvas = GameObject.FindGameObjectWithTag("Canvas").transform;
@@ -80,18 +81,20 @@ public class MovementScript : MonoBehaviour {
             if (timer1 > 2 && scale > 15)
             {
                 timer2 += Time.deltaTime;
-                scale = scale - timer2 * 45;
+                scale = scale - timer2 * 2;
                 GameOverImage1.rectTransform.localScale = new Vector3(1, 1, 1) * scale;
             } else if(scale < 15)
             {
-                Debug.Log(timer3);
-                timer3 += Time.deltaTime;
-                GameOverImage2.fillAmount += timer3;
+                if (GameOverImage2.fillAmount <= 1)
+                {
+                    timer3 += Time.deltaTime;
+                    GameOverImage2.fillAmount += timer3;
+                }
             }
         }
         //UI
         panel.color = new Color(1, 0, 0, gamma);
-        if (distancebetween > -1.5f)
+        if (distancebetween > - 1.5f)
         {
             gamma = 0;
         }
