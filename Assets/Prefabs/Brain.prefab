@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33518360476791484}
   - component: {fileID: 23651387148840036}
   - component: {fileID: 114384147058894904}
+  - component: {fileID: 65483317866077270}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -81,6 +82,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1117556375049430}
   m_Mesh: {fileID: 4300000, guid: a6b73af82da0ef4488c3213b8ee6cc00, type: 3}
+--- !u!65 &65483317866077270
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1117556375049430}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15067004, y: 0.120602, z: 0.20725605}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114384147058894904
 MonoBehaviour:
   m_ObjectHideFlags: 1

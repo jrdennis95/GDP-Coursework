@@ -5,11 +5,14 @@ using UnityEngine;
 public class EndlessSpawnerScript : MonoBehaviour {
 
     public GameObject[] prefabs;
+    public GameObject human;
     private Transform player;
     private float spawnLocation = -10.5f;
     private float spawnLength = 10.5f;
     private int maxSpawns = 8;
+    private int humanCount;
     private List<GameObject> activeSpawn;
+    private List<int> spawnHistory;
     private System.Random rnd;
     private int lastPrefab = 0;
     private int randomNo;
@@ -20,6 +23,8 @@ public class EndlessSpawnerScript : MonoBehaviour {
     private void Awake()
     {
         activeSpawn = new List<GameObject>();
+        spawnHistory = new List<int>();
+        humanCount = 0;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rnd = new System.Random();
         for (int i = 0; i < maxSpawns; i++)
@@ -70,6 +75,14 @@ public class EndlessSpawnerScript : MonoBehaviour {
         //bg.spawnBrains(new Vector3(copyposition.x, copyposition.y + 2, copyposition.z + 10));
         spawnLocation += spawnLength;
         activeSpawn.Add(go);
+        if(humanCount == 0 && activeSpawn.Count > 5)
+        {
+            go = Instantiate(human) as GameObject;          
+            go.transform.position = activeSpawn[4].transform.position + new Vector3(7,0,0);
+            go.transform.tag = "Human";
+            humanCount = 1;
+
+        }
     }
 
     void Delete()
@@ -87,6 +100,18 @@ public class EndlessSpawnerScript : MonoBehaviour {
         }
 
         lastPrefab = randomNo;
+        spawnHistory.Add(randomNo);
         return randomNo;
+
+    }
+
+public List<int> getSpawnHistory()
+    {
+        return spawnHistory;
+    }
+
+public void ResetHumanCount()
+    {
+        humanCount = 0;
     }
 }

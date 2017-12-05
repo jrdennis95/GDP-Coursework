@@ -47,14 +47,12 @@ public class BrainGenerator : MonoBehaviour
         }
         if (player.position.z > groundBehind.position.z && activeSpawn.Count > 20)
         {
-            Debug.Log(activeSpawn.Count);
             for (int i = 0; i < brainNo; i++)
             {
                 activeSpawn[i].tag = "Inactive";
             }
             groundBehind.tag = "Untagged";
             Delete();
-            Debug.Log(activeSpawn.Count);
         }
     }
 

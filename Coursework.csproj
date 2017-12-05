@@ -79,14 +79,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Campfire Pack\Script\SwitchView.cs" />
+    <Compile Include="Assets\MobMovement.cs" />
     <Compile Include="Assets\Scripts\BrainGenerator.cs" />
     <Compile Include="Assets\Scripts\BrainSpinner.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\EndlessSpawnerScript.cs" />
-    <Compile Include="Assets\Scripts\LoseLife.cs" />
+    <Compile Include="Assets\Scripts\HumanAI.cs" />
     <Compile Include="Assets\Scripts\MovementScript.cs" />
     <Compile Include="Assets\Scripts\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\ZombieLight.cs" />
+    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
+    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
+    <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Toon Zombie S\TSF\Shaders\TSF.shader" />
