@@ -610,7 +610,6 @@ GameObject:
   - component: {fileID: 136185540878915764}
   - component: {fileID: 95245186083592814}
   - component: {fileID: 143670365406003556}
-  - component: {fileID: 114314031506751422}
   m_Layer: 0
   m_Name: Human
   m_TagString: Untagged
@@ -1277,18 +1276,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114314031506751422
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1983894483097918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3373c870b4cd9f40a554390526ecea8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  strafespeed: 3
 --- !u!136 &136185540878915764
 CapsuleCollider:
   m_ObjectHideFlags: 1

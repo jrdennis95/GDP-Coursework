@@ -79,12 +79,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Campfire Pack\Script\SwitchView.cs" />
-    <Compile Include="Assets\MobMovement.cs" />
     <Compile Include="Assets\Scripts\BrainGenerator.cs" />
     <Compile Include="Assets\Scripts\BrainSpinner.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\EndlessSpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\GameStart.cs" />
     <Compile Include="Assets\Scripts\HumanAI.cs" />
+    <Compile Include="Assets\Scripts\MobMovement.cs" />
     <Compile Include="Assets\Scripts\MovementScript.cs" />
     <Compile Include="Assets\Scripts\ObjectPooler.cs" />
     <Compile Include="Assets\Scripts\ZombieLight.cs" />

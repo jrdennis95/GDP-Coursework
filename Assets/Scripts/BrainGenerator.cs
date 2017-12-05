@@ -6,6 +6,7 @@ public class BrainGenerator : MonoBehaviour
 {
 
     public GameObject[] prefabs;
+    private GameStart gs;
     private Transform ground;
     private Transform groundBehind;
     private Transform player;
@@ -21,9 +22,11 @@ public class BrainGenerator : MonoBehaviour
     private int randomNo;
     private Vector3 copyposition;
     private float lastposition;
-    // Use this for initialization
-    void Start()
+    private bool begin = false;
+
+    public void Init(bool started)
     {
+        Debug.Log("Hi");
         brainList = new GameObject[3];
         brainNo = 3;
         brainsActive = 0;
@@ -31,28 +34,37 @@ public class BrainGenerator : MonoBehaviour
         lastposition = 0;
         rnd = new System.Random();
         groundBehind = GameObject.FindGameObjectWithTag("Behind").transform;
+        begin = true;
+    }
+
+    void Start()
+    {
+        gs = GameObject.FindGameObjectWithTag("Menu").GetComponent<GameStart>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ground = GameObject.FindGameObjectWithTag("Ground").transform;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (begin)
+        {
+            ground = GameObject.FindGameObjectWithTag("Ground").transform;
+            player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (lastposition != ground.position.z/*ground.position.z - 20.0f > (spawnLocation - maxSpawns * spawnLength)*/)
-        {
-            lastposition = ground.position.z;
-            Spawn();
-            groundBehind = GameObject.FindGameObjectWithTag("Behind").transform;
-        }
-        if (player.position.z > groundBehind.position.z && activeSpawn.Count > 20)
-        {
-            for (int i = 0; i < brainNo; i++)
+            if (lastposition != ground.position.z/*ground.position.z - 20.0f > (spawnLocation - maxSpawns * spawnLength)*/)
             {
-                activeSpawn[i].tag = "Inactive";
+                lastposition = ground.position.z;
+                Spawn();
+                groundBehind = GameObject.FindGameObjectWithTag("Behind").transform;
             }
-            groundBehind.tag = "Untagged";
-            Delete();
+            if (player.position.z > groundBehind.position.z && activeSpawn.Count > 20)
+            {
+                for (int i = 0; i < brainNo; i++)
+                {
+                    activeSpawn[i].tag = "Inactive";
+                }
+                groundBehind.tag = "Untagged";
+                Delete();
+            }
         }
     }
 

@@ -14,6 +14,18 @@ TagManager:
   - Human
   - Mob
   - Panel
+  - Play
+  - Options
+  - Menu
+  - ResetScore
+  - Dark
+  - Light
+  - Return
+  - Menu2
+  - Sun
+  - Menu3
+  - Retry
+  - Exit
   layers:
   - Default
   - TransparentFX

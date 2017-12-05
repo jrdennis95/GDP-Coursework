@@ -5,27 +5,36 @@ using UnityEngine;
 public class MobMovement : MonoBehaviour {
 
     public Transform[] tar;
+    private GameStart gs;
     private Vector3 movement;
     private MovementScript ms;
     private Collider collider;
     private float runspeed;
-    private float additionalspeed;
     private float totalspeed;
+    private bool begin = false;
 
-    // Use this for initialization
-    void Start () {
+    public void Init(bool started)
+    {
         runspeed = 5.05f;
         ms = GameObject.Find("Zombie").GetComponent<MovementScript>();
         collider = GetComponent<Collider>();
+        begin = true;
+    }
+
+    void Start () {
+        gs = GameObject.FindGameObjectWithTag("Menu").GetComponent<GameStart>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        totalspeed = runspeed;
-        movement.x = 0;
-        movement.y = 0;
-        movement.z = totalspeed;
-        collider.transform.Translate(movement * Time.deltaTime);
+        if (begin)
+        {
+            totalspeed = runspeed;
+            movement.x = 0;
+            movement.y = 0;
+            movement.z = totalspeed;
+            collider.transform.Translate(movement * Time.deltaTime);
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)

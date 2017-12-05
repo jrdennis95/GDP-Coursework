@@ -5,6 +5,8 @@ using UnityEngine;
 public class EndlessSpawnerScript : MonoBehaviour {
 
     public GameObject[] prefabs;
+    private HumanAI script;
+    private GameStart gs;
     public GameObject human;
     private Transform player;
     private float spawnLocation = -10.5f;
@@ -18,44 +20,53 @@ public class EndlessSpawnerScript : MonoBehaviour {
     private int randomNo;
     private Vector3 copyposition;
     private BrainGenerator bg;
+    private bool begin = false;
     // Use this for initialization
 
-    private void Awake()
+    public void Init(bool started)
     {
-        activeSpawn = new List<GameObject>();
-        spawnHistory = new List<int>();
-        humanCount = 0;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        rnd = new System.Random();
-        for (int i = 0; i < maxSpawns; i++)
-        {
-            if (i < 1)
+            activeSpawn = new List<GameObject>();
+            spawnHistory = new List<int>();
+            humanCount = 0;
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+            rnd = new System.Random();
+            for (int i = 0; i < maxSpawns; i++)
             {
-                Spawn(0);
+                if (i < 1)
+                {
+                    Spawn(0);
+                }
+                else
+                {
+                    Spawn();
+                }
             }
-            else
-            {
-                Spawn();
-            }
-        }
-        activeSpawn[0].tag = "Behind";
-        activeSpawn[5].tag = "Ground";
-        activeSpawn[6].tag = "Untagged";
-        bg = FindObjectOfType<BrainGenerator>();
+            activeSpawn[0].tag = "Behind";
+            activeSpawn[5].tag = "Ground";
+            activeSpawn[6].tag = "Untagged";
+            bg = FindObjectOfType<BrainGenerator>();
+        begin = true;
     }
+        private void Awake()
+        {
+            gs = GameObject.FindGameObjectWithTag("Menu").GetComponent<GameStart>();
+        }
     void Start () {
 
     }
 
     // Update is called once per frame
     void Update () {
-		if(player.position.z - 20.0f > (spawnLocation - maxSpawns * spawnLength))
+        if (begin)
         {
-            activeSpawn[1].tag = "Behind";
-            activeSpawn[5].tag = "Untagged";
-            activeSpawn[6].tag = "Ground";
-            Spawn();
-            Delete();
+            if (player.position.z - 20.0f > (spawnLocation - maxSpawns * spawnLength))
+            {
+                activeSpawn[1].tag = "Behind";
+                activeSpawn[5].tag = "Untagged";
+                activeSpawn[6].tag = "Ground";
+                Spawn();
+                Delete();
+            }
         }
 	}
 
@@ -80,8 +91,8 @@ public class EndlessSpawnerScript : MonoBehaviour {
             go = Instantiate(human) as GameObject;          
             go.transform.position = activeSpawn[4].transform.position + new Vector3(7,0,0);
             go.transform.tag = "Human";
+            go.AddComponent<HumanAI>();
             humanCount = 1;
-
         }
     }
 
