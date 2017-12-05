@@ -7,63 +7,77 @@ public class HumanAI : MonoBehaviour {
     private Vector3 movement;
     private GameStart gs;
     private CharacterController control;
+    public GameObject human;
+    private GameObject humanobj;
     private EndlessSpawnerScript ess;
     private MovementScript ms;
+    private HumanCollisionControl hcc;
+    private List<GameObject> active;
     private float runspeed;
     private float jumpSpeed = 0.0f;
     private float strafespeed;
     private bool collided;
     private bool begin = false;
 
-
-
-    void Start()
+    public void Init(bool started)
     {
+        active = new List<GameObject>();
         strafespeed = 3;
-        control = GetComponent<CharacterController>();
         ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
-        ms = GameObject.Find("Zombie").GetComponent<MovementScript>();
+        ms = GameObject.Find("Player").GetComponent<MovementScript>();
+
+        GameObject go;
+        go = Instantiate(human) as GameObject;
+        go.transform.position = ess.spawnPosition() + new Vector3(7, 0, 0);
+        go.transform.tag = "Human";
+        go.transform.SetParent(transform);
+        active.Add(go);
+
         runspeed = ms.GetTotalSpeed();
+        begin = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
-            if (collided && control.isGrounded)
-            {
-                jumpSpeed = 5.0f;
-            }
-            else
-            {
-                jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
-            }
-            movement.x = 0.1f * strafespeed;
-            movement.y = jumpSpeed;
-            movement.z = runspeed;
-            control.Move(movement * Time.deltaTime);
+
+        void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (begin) {
             //Collisions
             if (movement.y < -10 && control.isGrounded != true)
             {
-                Destroy(this.gameObject);
-                ess.ResetHumanCount();
+                DeleteHuman();
+                NewHuman();
             }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.tag == "Brain")
-        {
-            Physics.IgnoreCollision(control, hit.collider);
-        }
-
-        else if (hit.point.z > transform.position.z + control.radius && hit.gameObject.tag == "Obstacle")
-        {
-            collided = true;
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+
+    public void NewHuman()
     {
-        collided = false;
+        GameObject go;
+        go = Instantiate(human) as GameObject;
+        go.transform.position = ess.spawnPosition() + new Vector3(7, 0, 0);
+        go.transform.tag = "Human";
+        go.transform.SetParent(transform);
+        active.Add(go);
     }
 
+    public void DeleteHuman()
+    {
+        Destroy(active[0]);
+        active.RemoveAt(0);
+    }
+
+    public void EndBegin()
+    {
+        begin = false;
+    }
+
+    public void StartBegin()
+    {
+        begin = true;
+    }
 }

@@ -28,7 +28,8 @@ public class EndlessSpawnerScript : MonoBehaviour {
             activeSpawn = new List<GameObject>();
             spawnHistory = new List<int>();
             humanCount = 0;
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            spawnLocation = -10.5f;
+            player = GameObject.FindGameObjectWithTag("Zombie").transform;
             rnd = new System.Random();
             for (int i = 0; i < maxSpawns; i++)
             {
@@ -88,10 +89,6 @@ public class EndlessSpawnerScript : MonoBehaviour {
         activeSpawn.Add(go);
         if(humanCount == 0 && activeSpawn.Count > 5)
         {
-            go = Instantiate(human) as GameObject;          
-            go.transform.position = activeSpawn[4].transform.position + new Vector3(7,0,0);
-            go.transform.tag = "Human";
-            go.AddComponent<HumanAI>();
             humanCount = 1;
         }
     }
@@ -102,7 +99,16 @@ public class EndlessSpawnerScript : MonoBehaviour {
         activeSpawn.RemoveAt(0);
     }
 
-    int RandomNumberGenerator()
+    public void DeleteSpawner()
+    {
+        for(int i = 0; i < maxSpawns; i++)
+        {
+            Destroy(activeSpawn[0]);
+            activeSpawn.RemoveAt(0);
+        }
+    }
+
+        int RandomNumberGenerator()
     {
         int randomNo = lastPrefab;
         while (randomNo == lastPrefab)
@@ -124,5 +130,20 @@ public List<int> getSpawnHistory()
 public void ResetHumanCount()
     {
         humanCount = 0;
+    }
+
+public int GetHumanCount()
+    {
+        return humanCount;
+    }
+
+public Vector3 spawnPosition()
+    {
+        return activeSpawn[4].transform.position;
+    }
+
+    public void EndBegin()
+    {
+        begin = false;
     }
 }

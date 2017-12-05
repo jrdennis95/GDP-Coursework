@@ -26,6 +26,8 @@ TagManager:
   - Menu3
   - Retry
   - Exit
+  - Mobs
+  - Zombie
   layers:
   - Default
   - TransparentFX

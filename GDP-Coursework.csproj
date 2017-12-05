@@ -79,9 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Campfire Pack\Script\SwitchView.cs" />
+    <Compile Include="Assets\HumanCollisionControl.cs" />
     <Compile Include="Assets\Scripts\BrainGenerator.cs" />
     <Compile Include="Assets\Scripts\BrainSpinner.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\CollisionControl.cs" />
     <Compile Include="Assets\Scripts\EndlessSpawnerScript.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
     <Compile Include="Assets\Scripts\HumanAI.cs" />

@@ -26,7 +26,6 @@ public class BrainGenerator : MonoBehaviour
 
     public void Init(bool started)
     {
-        Debug.Log("Hi");
         brainList = new GameObject[3];
         brainNo = 3;
         brainsActive = 0;
@@ -112,6 +111,15 @@ public class BrainGenerator : MonoBehaviour
         }
     }
 
+    public void DeleteBrains()
+    {
+        for (int i = 0; i < brainsActive; i++)
+        {
+            Destroy(activeSpawn[0]);
+            activeSpawn.RemoveAt(0);
+        }
+    }
+
     int RandomNumberGenerator()
     {
         int randomNo = lastLane;
@@ -122,5 +130,9 @@ public class BrainGenerator : MonoBehaviour
 
         lastLane = randomNo;
         return randomNo;
+    }
+    public void EndBegin()
+    {
+        begin = false;
     }
 }

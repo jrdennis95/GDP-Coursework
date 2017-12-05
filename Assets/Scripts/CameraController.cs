@@ -6,22 +6,39 @@ public class CameraController : MonoBehaviour
 {
 
     public float moveSpeed;
-    public Transform tar;
+    private Transform ms;
     public Vector3 offset;
     private Vector3 newtar;
-    public Vector3 startingPosition;
+    private Vector3 startingPosition;
+    private Vector3 camerabehind;
+    private bool begin = false;
 
-    // Use this for initialization
-    void Start()
+    public void Init(bool started)
     {
-        startingPosition = tar.position - transform.position;
+        ms = GameObject.FindGameObjectWithTag("Zombie").transform;
+        transform.position = camerabehind;
+        startingPosition = ms.position + transform.position;
+        begin = true;
+    }
+        // Use this for initialization
+        void Start()
+    {
+        camerabehind = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = tar.position - startingPosition;
-        newtar = tar.position + offset;
-        transform.LookAt(newtar);
+        if (begin)
+        {
+            transform.position = ms.position + camerabehind;
+            newtar = ms.position + offset;
+            transform.LookAt(newtar);
+        }
+    }
+
+    public void EndBegin()
+    {
+        begin = false;
     }
 }
