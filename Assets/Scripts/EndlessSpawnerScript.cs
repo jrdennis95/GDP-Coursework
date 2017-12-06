@@ -9,6 +9,8 @@ public class EndlessSpawnerScript : MonoBehaviour {
     private GameStart gs;
     public GameObject human;
     private Transform player;
+    private Transform torch;
+    private Transform bonfire;
     private float spawnLocation = -10.5f;
     private float spawnLength = 10.5f;
     private int maxSpawns = 8;
@@ -86,6 +88,15 @@ public class EndlessSpawnerScript : MonoBehaviour {
         copyposition = go.transform.position;
         //bg.spawnBrains(new Vector3(copyposition.x, copyposition.y + 2, copyposition.z + 10));
         spawnLocation += spawnLength;
+        torch = go.GetComponentInChildren<Transform>().Find("modelTorch");
+        bonfire = go.GetComponentInChildren<Transform>().Find("modelBonfire");
+        if (torch != null)
+        {
+            torch.GetComponent<TorchLight>().Init(true);
+        } else if(bonfire != null)
+        {
+            bonfire.GetComponent<TorchLight>().Init(true);
+        }
         activeSpawn.Add(go);
         if(humanCount == 0 && activeSpawn.Count > 5)
         {

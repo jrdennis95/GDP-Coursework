@@ -47,7 +47,7 @@ public class BrainGenerator : MonoBehaviour
         if (begin)
         {
             ground = GameObject.FindGameObjectWithTag("Ground").transform;
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Zombie").transform;
 
             if (lastposition != ground.position.z/*ground.position.z - 20.0f > (spawnLocation - maxSpawns * spawnLength)*/)
             {
@@ -55,6 +55,7 @@ public class BrainGenerator : MonoBehaviour
                 Spawn();
                 groundBehind = GameObject.FindGameObjectWithTag("Behind").transform;
             }
+
             if (player.position.z > groundBehind.position.z && activeSpawn.Count > 20)
             {
                 for (int i = 0; i < brainNo; i++)
@@ -101,23 +102,22 @@ public class BrainGenerator : MonoBehaviour
 
     void Delete()
     {
-        for (int i = 0; i < brainNo; i++)
+        if (activeSpawn.Count != 0)
         {
-            if (activeSpawn[0].tag == "Inactive")
+            for (int i = 0; i < activeSpawn.Count; i++)
             {
-                Destroy(activeSpawn[0]);
-                activeSpawn.RemoveAt(0);
+                if (activeSpawn[0].tag == "Inactive")
+                {
+                    Destroy(activeSpawn[0]);
+                    activeSpawn.RemoveAt(0);
+                }
             }
         }
     }
 
     public void DeleteBrains()
     {
-        for (int i = 0; i < brainsActive; i++)
-        {
-            Destroy(activeSpawn[0]);
-            activeSpawn.RemoveAt(0);
-        }
+        activeSpawn = null;
     }
 
     int RandomNumberGenerator()

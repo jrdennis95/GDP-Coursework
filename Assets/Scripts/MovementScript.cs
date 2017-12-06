@@ -7,6 +7,7 @@ public class MovementScript : MonoBehaviour {
 
     private GameStart gs;
     private CharacterController control;
+    private CollisionControl cc;
     private EndlessSpawnerScript ess;
     private GameObject mob;
     public GameObject zombie;
@@ -27,6 +28,7 @@ public class MovementScript : MonoBehaviour {
     private float distancebetween;
     public float strafespeed;
     public float runspeed;
+    private float fixedrunspeed;
     private float totalspeed;
     private int score;
     private int heartcount;
@@ -34,6 +36,7 @@ public class MovementScript : MonoBehaviour {
     private float gravity = 9.8f;
     private bool begin = false;
     private bool iphone;
+    private Vector3 lastposition;
     private Vector2 touchOrigin;
 
     public void Init(bool started)
@@ -54,7 +57,8 @@ public class MovementScript : MonoBehaviour {
         heartcount = 3;
         gamma = 0;
         dead = false;
-        totalspeed = runspeed;
+        runspeed = fixedrunspeed;
+        totalspeed = fixedrunspeed;
         canvas = GameObject.FindGameObjectWithTag("Canvas").transform;
         panel = GameObject.FindGameObjectWithTag("Panel").GetComponent<Image>();
         activeHearts = new List<GameObject>();
@@ -65,11 +69,14 @@ public class MovementScript : MonoBehaviour {
             go.transform.SetParent(canvas, false);
             activeHearts.Add(go);
         }
+        cc = GameObject.FindGameObjectWithTag("Zombie").GetComponent<CollisionControl>();
+        cc.Init(true);
         begin = true;
     }
 
         void Start () {
         touchOrigin = -Vector2.one;
+        fixedrunspeed = runspeed;
             heartcount = 3;
             gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         }
@@ -79,13 +86,12 @@ public class MovementScript : MonoBehaviour {
         if (begin)
         {
             mob = GameObject.FindGameObjectWithTag("Mob");
-            //Debug.Log(mob.activeSelf);
+
             //Jumping
             if (dead == false)
             {
                 distancebetween = active[0].transform.position.z - mob.transform.position.z;
-                totalspeed = runspeed + (score * 0.01f);
-                
+                totalspeed = runspeed + (score * 0.05f);
                 float horizontal = 0;
                 float vertical = 0;
 #if UNITY_STANDALONE || UNITY_WEBPLAYER
@@ -133,7 +139,7 @@ public class MovementScript : MonoBehaviour {
                 }
 
             //UI
-            panel.color = new Color(1, 0, 0, gamma);
+           /* panel.color = new Color(1, 0, 0, gamma);
             if (distancebetween > -1.5f)
             {
                 gamma = 0;
@@ -141,7 +147,7 @@ public class MovementScript : MonoBehaviour {
             else
             {
                 gamma = (distancebetween * -1) / 1.5f - 0.8f;
-            }
+            } */
             UItext.text = score.ToString("D3");
             //Collisions
         }
@@ -149,12 +155,18 @@ public class MovementScript : MonoBehaviour {
     
     public void DeletePlayer()
     {
+        cc.Init(false);
         Destroy(active[0]);
         active.RemoveAt(0);
         Destroy(activeHearts[0]);
         Destroy(activeHearts[1]);
         Destroy(activeHearts[2]);
         activeHearts.Clear();
+    }
+
+    public float GetDistanceBetween()
+    {
+        return distancebetween;
     }
 
     public void addScore(int x)
@@ -165,6 +177,15 @@ public class MovementScript : MonoBehaviour {
     public void subtractScore(int x)
     {
         score = score - x;
+    }
+
+    public void SubtractSpeed(float x)
+    {
+        runspeed = runspeed - x;
+    }
+    public void AddSpeed(float x)
+    {
+        runspeed = runspeed + x;
     }
 
 

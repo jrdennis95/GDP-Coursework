@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MobMovement : MonoBehaviour {
 
-    public Transform[] tar;
     private GameStart gs;
     private Vector3 movement;
     private Collider collider;
@@ -25,6 +24,7 @@ public class MobMovement : MonoBehaviour {
         GameObject go;
         go = Instantiate(mob) as GameObject;
         go.transform.SetParent(transform);
+        go.transform.position = transform.position;
         go.transform.tag = "Mob";
         collider = go.transform.GetComponent<Collider>();
         active.Add(go);
@@ -42,15 +42,15 @@ public class MobMovement : MonoBehaviour {
             movement.x = 0;
             movement.y = 0;
             movement.z = totalspeed;
-            collider.transform.Translate(movement * Time.deltaTime);
-        }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.tag == "Zombie")
-        {
-            Debug.Log("KILLED");
+            if (collider != null)
+            {
+                collider.transform.Translate(movement * Time.deltaTime);
+            }
+            if (ms.GetDistanceBetween() > 6 && collider != null)
+            {
+                movement.z = totalspeed*2;
+                collider.transform.Translate(movement * Time.deltaTime);
+            }
         }
     }
 

@@ -28,6 +28,7 @@ TagManager:
   - Exit
   - Mobs
   - Zombie
+  - Torch
   layers:
   - Default
   - TransparentFX

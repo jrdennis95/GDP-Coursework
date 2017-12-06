@@ -18,7 +18,6 @@ public class HumanAI : MonoBehaviour {
     private float strafespeed;
     private bool collided;
     private bool begin = false;
-
     public void Init(bool started)
     {
         active = new List<GameObject>();
@@ -33,7 +32,6 @@ public class HumanAI : MonoBehaviour {
         go.transform.SetParent(transform);
         active.Add(go);
 
-        runspeed = ms.GetTotalSpeed();
         begin = true;
     }
 
@@ -45,8 +43,7 @@ public class HumanAI : MonoBehaviour {
     void Update()
     {
         if (begin) {
-            //Collisions
-            if (movement.y < -10 && control.isGrounded != true)
+            if (active[0].transform.position.y < -5)
             {
                 DeleteHuman();
                 NewHuman();

@@ -96,7 +96,7 @@ public class GameStart : MonoBehaviour {
         TransformImage2 = GameOverImage2.transform;
         Image2Fill = GameOverImage2.fillAmount;
         hiscore = 0;
-        scale = 118f;
+        scale = 150f;
         Init(1);
     }
 	
@@ -109,10 +109,10 @@ public class GameStart : MonoBehaviour {
             script2.EndBegin();
             script3.DeleteHuman();
             script3.EndBegin();
-            script4.EndBegin();
             script4.DeleteBrains();
-            script5.EndBegin();
+            script4.EndBegin();
             script5.DeletePlayer();
+            script5.EndBegin();
             script6.EndBegin();
             Menu1.gameObject.SetActive(true);
             Menu2.gameObject.SetActive(false);
@@ -137,9 +137,9 @@ public class GameStart : MonoBehaviour {
                 if (GameOverImage2.fillAmount < 1)
                 {
                     timer3 += Time.deltaTime;
-                    GameOverImage2.fillAmount += timer3;
+                    GameOverImage2.fillAmount += timer3 * 0.5f;
                 }
-                if (GameOverImage2.fillAmount >= 1)
+                if (GameOverImage2.fillAmount == 1)
                 {
                     Menu3.gameObject.SetActive(true);
                     died = false;
@@ -213,7 +213,6 @@ public class GameStart : MonoBehaviour {
     }
     private void TaskOnClick7()
     {
-        Debug.Log("Testing");
         if (darkmode)
         {
             sun.transform.localEulerAngles = new Vector3(210, sun.transform.localEulerAngles.y, sun.transform.localEulerAngles.z);
@@ -224,8 +223,8 @@ public class GameStart : MonoBehaviour {
         }
         timer1 = 0f;
         timer2 = 0f;
-        scale = 118f;
-        GameOverImage1.rectTransform.localScale = TransformImage1.localScale;
+        scale = 150f;
+        GameOverImage1.rectTransform.localScale = new Vector3(1,1,1) * scale;
         GameOverImage2.fillAmount = Image2Fill;
 
         script5.Init(true);
@@ -248,8 +247,8 @@ public class GameStart : MonoBehaviour {
         }
         timer1 = 0f;
         timer2 = 0f;
-        scale = 118f;
-        GameOverImage1.rectTransform.localScale = TransformImage1.localScale;
+        scale = 150f;
+        GameOverImage1.rectTransform.localScale = new Vector3(1, 1, 1) * scale;
         GameOverImage2.fillAmount = Image2Fill;
         Menu3.gameObject.SetActive(false);
         Menu1.gameObject.SetActive(true);
