@@ -25,6 +25,10 @@ public class GameStart : MonoBehaviour {
     private float scale;
 
     //MovementScript.HasDied(); MovementScript.GetScore();
+    void Awake()
+    {
+        Screen.SetResolution(1000, 1500, false, 120);
+    }
 
     public void Init(int selectedmenu)
     {

@@ -13,10 +13,6 @@ public class CollisionControl : MonoBehaviour
     private GameStart gs;
     private Animator anim;
 
-    void Awake()
-    {
-        Screen.SetResolution(900, 1500, false, 120);
-    }
     // Use this for initialization
     void Start()
     {
