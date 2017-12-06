@@ -33,6 +33,7 @@ public class MovementScript : MonoBehaviour {
     private float jumpSpeed = 0.0f;
     private float gravity = 9.8f;
     private bool begin = false;
+    private bool iphone;
 
     public void Init(bool started)
     {
@@ -67,6 +68,10 @@ public class MovementScript : MonoBehaviour {
     }
 
         void Start () {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            iphone = true;
+        }
             heartcount = 3;
             gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         }
@@ -90,7 +95,22 @@ public class MovementScript : MonoBehaviour {
                 {
                     jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
                 }
-                movement.x = Input.GetAxisRaw("Horizontal") * strafespeed;
+                if (iphone)
+                {
+                    Vector3 dir;
+                    dir = Vector3.zero;
+                    dir.z = Input.acceleration.x;
+                    if (dir.sqrMagnitude > 1)
+                    {
+                        dir.Normalize();
+                    }
+                    dir *= Time.deltaTime;
+                    movement.x = dir.z * strafespeed;
+                } else
+                {
+                    movement.x = Input.GetAxisRaw("Horizontal") * strafespeed;
+                }
+            
                 movement.y = jumpSpeed;
                 movement.z = totalspeed;
                 control.Move(movement * Time.deltaTime);
