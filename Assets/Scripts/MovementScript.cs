@@ -34,6 +34,7 @@ public class MovementScript : MonoBehaviour {
     private float gravity = 9.8f;
     private bool begin = false;
     private bool iphone;
+    private Vector2 touchOrigin;
 
     public void Init(bool started)
     {
@@ -68,10 +69,7 @@ public class MovementScript : MonoBehaviour {
     }
 
         void Start () {
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            iphone = true;
-        }
+        touchOrigin = -Vector2.one;
             heartcount = 3;
             gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         }
@@ -87,6 +85,11 @@ public class MovementScript : MonoBehaviour {
             {
                 distancebetween = active[0].transform.position.z - mob.transform.position.z;
                 totalspeed = runspeed + (score * 0.01f);
+                
+                float horizontal = 0;
+                float vertical = 0;
+#if UNITY_STANDALONE || UNITY_WEBPLAYER
+
                 if (Input.GetButtonDown("Jump") && control.isGrounded)
                 {
                     jumpSpeed = 5.0f;
@@ -95,26 +98,39 @@ public class MovementScript : MonoBehaviour {
                 {
                     jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
                 }
-                if (iphone)
+                horizontal = Input.GetAxisRaw("Horizontal");
+#else
+
+                if (Input.touchCount > 0)
                 {
-                    Vector3 dir;
-                    dir = Vector3.zero;
-                    dir.z = Input.acceleration.x;
-                    if (dir.sqrMagnitude > 1)
+                    Touch myTouch = Input.touches[0];
+                    if (myTouch.phase == TouchPhase.Began)
                     {
-                        dir.Normalize();
+                        touchOrigin = myTouch.position;
                     }
-                    dir *= Time.deltaTime;
-                    movement.x = dir.z * strafespeed;
-                } else
-                {
-                    movement.x = Input.GetAxisRaw("Horizontal") * strafespeed;
+                    else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
+                    {
+                        Vector2 touchEnd = myTouch.position;
+                        float y = touchEnd.y - touchOrigin.y;
+                            vertical = y > 0 ? 1 : -1;
+                    }
                 }
-            
-                movement.y = jumpSpeed;
-                movement.z = totalspeed;
-                control.Move(movement * Time.deltaTime);
-            }
+
+                if (vertical == 1 && control.isGrounded)
+                {
+                    jumpSpeed = 5.0f;
+                }
+                else
+                {
+                    jumpSpeed = movement.y + (Physics.gravity.y * Time.deltaTime);
+                }
+                horizontal = Input.acceleration.x*2;
+#endif
+                movement.x = horizontal * strafespeed;
+                    movement.y = jumpSpeed;
+                    movement.z = totalspeed;
+                    control.Move(movement * Time.deltaTime);
+                }
 
             //UI
             panel.color = new Color(1, 0, 0, gamma);
