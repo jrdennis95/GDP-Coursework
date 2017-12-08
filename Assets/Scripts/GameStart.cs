@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class GameStart : MonoBehaviour {
 
-    public Button b1, b2, b3, b4, b5, b6, b7, b8;
-    public GameObject Menu1, Menu2, Menu3;
+    public Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
+    public GameObject Menu1, Menu2, Menu3, Menu4;
     public Transform sun;
     private int hiscore;
-    public Text hiscoretext, environmenttext;
+    public Text hiscoretext, environmenttext, strafe1, strafe2, jump1, jump2;
     private bool darkmode;
     private bool died;
     private MobMovement script1;
@@ -28,24 +28,34 @@ public class GameStart : MonoBehaviour {
     void Awake()
     {
         Screen.SetResolution(1000, 1500, false, 120);
+#if UNITY_STANDALONE || UNITY_WEBPLAYER
+        strafe2.gameObject.SetActive(true);
+        jump2.gameObject.SetActive(true);
+#else
+        strafe1.gameObject.SetActive(true);
+        jump1.gameObject.SetActive(true);
+#endif
     }
 
     public void Init(int selectedmenu)
     {
+        b1.onClick.RemoveAllListeners();
+        b2.onClick.RemoveAllListeners();
+        b3.onClick.RemoveAllListeners();
+        b4.onClick.RemoveAllListeners();
+        b5.onClick.RemoveAllListeners();
+        b6.onClick.RemoveAllListeners();
+        b7.onClick.RemoveAllListeners();
+        b8.onClick.RemoveAllListeners();
+        b9.onClick.RemoveAllListeners();
+        b10.onClick.RemoveAllListeners();
         if (selectedmenu == 1)
         {
-            b1.onClick.RemoveAllListeners();
-            b2.onClick.RemoveAllListeners();
-            b3.onClick.RemoveAllListeners();
-            b4.onClick.RemoveAllListeners();
-            b5.onClick.RemoveAllListeners();
-            b6.onClick.RemoveAllListeners();
-            b7.onClick.RemoveAllListeners();
-            b8.onClick.RemoveAllListeners();
             b1 = GameObject.FindGameObjectWithTag("Play").GetComponent<Button>();
             b2 = GameObject.FindGameObjectWithTag("Options").GetComponent<Button>();
             b1.onClick.AddListener(TaskOnClick1);
             b2.onClick.AddListener(TaskOnClick2);
+            b9.onClick.AddListener(TaskOnClick9);
             script1 = GameObject.Find("Mobs").GetComponent<MobMovement>();
             script2 = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
             script3 = GameObject.Find("Humans").GetComponent<HumanAI>();
@@ -54,15 +64,6 @@ public class GameStart : MonoBehaviour {
             script6 = GameObject.Find("Main Camera").GetComponent<CameraController>();
         } else if (selectedmenu == 2)
         {
-
-            b1.onClick.RemoveAllListeners();
-            b2.onClick.RemoveAllListeners();
-            b3.onClick.RemoveAllListeners();
-            b4.onClick.RemoveAllListeners();
-            b5.onClick.RemoveAllListeners();
-            b6.onClick.RemoveAllListeners();
-            b7.onClick.RemoveAllListeners();
-            b8.onClick.RemoveAllListeners();
             hiscoretext.text = "Hiscore: " + hiscore.ToString("D3");
             b3 = GameObject.FindGameObjectWithTag("ResetScore").GetComponent<Button>();
             b4 = GameObject.FindGameObjectWithTag("Dark").GetComponent<Button>();
@@ -74,18 +75,14 @@ public class GameStart : MonoBehaviour {
             b6.onClick.AddListener(TaskOnClick6);
         } else if (selectedmenu == 3)
         {
-            b1.onClick.RemoveAllListeners();
-            b2.onClick.RemoveAllListeners();
-            b3.onClick.RemoveAllListeners();
-            b4.onClick.RemoveAllListeners();
-            b5.onClick.RemoveAllListeners();
-            b6.onClick.RemoveAllListeners();
-            b7.onClick.RemoveAllListeners();
-            b8.onClick.RemoveAllListeners();
             b7 = GameObject.FindGameObjectWithTag("Retry").GetComponent<Button>();
             b8 = GameObject.FindGameObjectWithTag("Exit").GetComponent<Button>();
             b7.onClick.AddListener(TaskOnClick7);
             b8.onClick.AddListener(TaskOnClick8);
+        } else if(selectedmenu == 4)
+        {
+            b10 = GameObject.FindGameObjectWithTag("Return").GetComponent<Button>();
+            b10.onClick.AddListener(TaskOnClick10);
         }
     }
 
@@ -254,6 +251,20 @@ public class GameStart : MonoBehaviour {
         Menu1.gameObject.SetActive(true);
         Init(1);
 
+    }
+
+    private void TaskOnClick9()
+    {
+        Menu1.gameObject.SetActive(false);
+        Menu4.gameObject.SetActive(true);
+        Init(4);
+    }
+
+    private void TaskOnClick10()
+    {
+        Menu4.gameObject.SetActive(false);
+        Menu1.gameObject.SetActive(true);
+        Init(1);
     }
 
     public void ControlDeath(bool x)

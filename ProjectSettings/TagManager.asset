@@ -29,6 +29,12 @@ TagManager:
   - Mobs
   - Zombie
   - Torch
+  - Strafe1
+  - Strafe2
+  - Jump1
+  - Jump2
+  - Menu4
+  - Controls
   layers:
   - Default
   - TransparentFX
