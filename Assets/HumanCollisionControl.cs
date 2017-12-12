@@ -34,19 +34,16 @@ public class HumanCollisionControl : MonoBehaviour {
         {
             direction = -0.1f;
             lockedcounter = 10;
-            Debug.Log("left");
         }
         else if (RandomNumberGenerator() == 1 && lockedcounter <= 0)
         {
             direction = 0.1f;
             lockedcounter = 10;
-            Debug.Log("right");
         }
         else if (RandomNumberGenerator() == 2 && lockedcounter <= 0)
         {
             direction = 0;
             lockedcounter = 10;
-            Debug.Log("middle");
         }
 
         if (collided && control.isGrounded)

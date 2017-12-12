@@ -14,7 +14,8 @@ public class MovementScript : MonoBehaviour {
     private GameObject zombieplayer;
     private MobMovement mobscript;
     private BoxCollider bc;
-    public Text UItext;
+    public Text UItext, pauseText, playText, pauseText2;
+    public GameObject pausemenu;
     private Vector3 movement;
     public GameObject[] hearts;
     private Transform canvas;
@@ -22,6 +23,7 @@ public class MovementScript : MonoBehaviour {
     private List<GameObject> activeHearts;
     private Vector3 offset;
     private List<GameObject> active;
+    public Button pause;
     private bool dead, deathanimover;
     private bool started;
     private float gamma;
@@ -36,6 +38,7 @@ public class MovementScript : MonoBehaviour {
     private float gravity = 9.8f;
     private bool begin = false;
     private bool iphone;
+    private bool paused;
     private Vector3 lastposition;
     private Vector2 touchOrigin;
 
@@ -48,10 +51,13 @@ public class MovementScript : MonoBehaviour {
         go.transform.SetParent(transform);
         go.transform.tag = "Zombie";
         active.Add(go);
-
+        paused = false;
+        gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
         control = GameObject.FindGameObjectWithTag("Zombie").GetComponent<CharacterController>();
         ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
+
+        pause.onClick.AddListener(TaskOnClickPause);
         //GameOverImage = GameObject.Find("GameOverImage").GetComponent<GameObject>();
         score = 0;
         heartcount = 3;
@@ -71,6 +77,7 @@ public class MovementScript : MonoBehaviour {
         }
         cc = GameObject.FindGameObjectWithTag("Zombie").GetComponent<CollisionControl>();
         cc.Init(true);
+        Debug.Log(false);
         begin = true;
     }
 
@@ -78,7 +85,6 @@ public class MovementScript : MonoBehaviour {
         touchOrigin = -Vector2.one;
         fixedrunspeed = runspeed;
             heartcount = 3;
-            gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         }
 
     // Update is called once per frame
@@ -88,7 +94,7 @@ public class MovementScript : MonoBehaviour {
             mob = GameObject.FindGameObjectWithTag("Mob");
 
             //Jumping
-            if (dead == false)
+            if (dead == false && paused == false)
             {
                 distancebetween = active[0].transform.position.z - mob.transform.position.z;
                 totalspeed = runspeed + (score * 0.05f);
@@ -153,6 +159,29 @@ public class MovementScript : MonoBehaviour {
         }
     }
     
+    private void TaskOnClickPause()
+    {
+        if (Time.timeScale == 1 && paused == false)
+        {
+            Debug.Log("Hello");
+            Time.timeScale = 0;
+            playText.gameObject.SetActive(true);
+            pauseText.gameObject.SetActive(false);
+            pauseText2.gameObject.SetActive(true);
+            pausemenu.gameObject.SetActive(true);
+            gs.SetPauseListener();
+        } else
+        {
+            Debug.Log("Goodbye");
+            Time.timeScale = 1;
+            pauseText.gameObject.SetActive(true);
+            playText.gameObject.SetActive(false);
+            pauseText2.gameObject.SetActive(false);
+            pausemenu.gameObject.SetActive(false);
+            gs.RemovePauseListener();
+        }
+    }
+    
     public void DeletePlayer()
     {
         cc.Init(false);
@@ -198,6 +227,7 @@ public class MovementScript : MonoBehaviour {
     {
         return score;
     }
+
 
     public void EndBegin()
     {

@@ -110,10 +110,10 @@ public class CollisionControl : MonoBehaviour
             }
             if (ms.GetScore() > 0)
             {
-                ms.subtractScore(10);
+                ms.subtractScore(5);
             } else if(ms.GetScore() > 100)
             {
-                ms.subtractScore(20);
+                ms.subtractScore(10);
             }
             if (ms.GetHearts() == 3)
             {

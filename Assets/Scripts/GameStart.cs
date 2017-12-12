@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameStart : MonoBehaviour {
 
-    public Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
+    public Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11;
     public GameObject Menu1, Menu2, Menu3, Menu4;
     public Transform sun;
     private int hiscore;
@@ -18,6 +18,7 @@ public class GameStart : MonoBehaviour {
     private BrainGenerator script4;
     private MovementScript script5;
     private CameraController script6;
+    private Score score;
     public Image GameOverImage1, GameOverImage2;
     private Transform TransformImage1, TransformImage2;
     private float Image2Fill;
@@ -49,6 +50,7 @@ public class GameStart : MonoBehaviour {
         b8.onClick.RemoveAllListeners();
         b9.onClick.RemoveAllListeners();
         b10.onClick.RemoveAllListeners();
+        b11.onClick.RemoveAllListeners();
         if (selectedmenu == 1)
         {
             b1 = GameObject.FindGameObjectWithTag("Play").GetComponent<Button>();
@@ -92,7 +94,9 @@ public class GameStart : MonoBehaviour {
         TransformImage1 = GameOverImage1.transform;
         TransformImage2 = GameOverImage2.transform;
         Image2Fill = GameOverImage2.fillAmount;
-        hiscore = 0;
+        score = gameObject.AddComponent<Score>();
+        LoadScore();
+        hiscore = GetScore();
         scale = 150f;
         Init(1);
     }
@@ -121,6 +125,8 @@ public class GameStart : MonoBehaviour {
             if (script5.GetScore() > hiscore)
             {
                 hiscore = script5.GetScore();
+                score.SetScore(hiscore);
+                SubmitScore(hiscore);
             }
             timer1 += Time.deltaTime;
             if (timer1 > 2 && scale > 15)
@@ -140,6 +146,8 @@ public class GameStart : MonoBehaviour {
                 {
                     Menu3.gameObject.SetActive(true);
                     died = false;
+                    Time.timeScale = 1;
+                    script5.pause.onClick.RemoveAllListeners();
                     script1.DeleteMob();
                     script1.EndBegin();
                     script2.DeleteSpawner();
@@ -178,8 +186,44 @@ public class GameStart : MonoBehaviour {
         script2.Init(true);
         script3.Init(true);
         script4.Init(true);
-        
         Menu1.gameObject.SetActive(false);
+
+    }
+
+    public void TaskOnClickPause()
+    {
+        Time.timeScale = 1;
+        script5.pauseText.gameObject.SetActive(true);
+        script5.playText.gameObject.SetActive(false);
+        script5.pauseText2.gameObject.SetActive(false);
+        script5.pausemenu.gameObject.SetActive(false);
+        script5.pause.onClick.RemoveAllListeners();
+        script1.DeleteMob();
+        script1.EndBegin();
+        script2.DeleteSpawner();
+        script2.EndBegin();
+        script3.DeleteHuman();
+        script3.EndBegin();
+        script4.EndBegin();
+        script4.DeleteBrains();
+        script5.EndBegin();
+        script5.DeletePlayer();
+        script6.EndBegin();
+        if (darkmode)
+        {
+            sun.transform.localEulerAngles = new Vector3(210, sun.transform.localEulerAngles.y, sun.transform.localEulerAngles.z);
+        }
+        else
+        {
+            sun.transform.localEulerAngles = new Vector3(20, sun.transform.localEulerAngles.y, sun.transform.localEulerAngles.z);
+        }
+        timer1 = 0f;
+        timer2 = 0f;
+        scale = 150f;
+        GameOverImage1.rectTransform.localScale = new Vector3(1, 1, 1) * scale;
+        GameOverImage2.fillAmount = Image2Fill;
+        Menu1.gameObject.SetActive(true);
+        Init(1);
     }
     private void TaskOnClick2()
     {
@@ -190,6 +234,7 @@ public class GameStart : MonoBehaviour {
     private void TaskOnClick3()
     {
         hiscore = 0;
+        ResetScore();
         hiscoretext.text = "Hiscore: " + hiscore.ToString("D3");
     }
     private void TaskOnClick4()
@@ -266,11 +311,50 @@ public class GameStart : MonoBehaviour {
         Menu1.gameObject.SetActive(true);
         Init(1);
     }
+    
+    public void SetPauseListener()
+    {
+        b11.onClick.AddListener(TaskOnClickPause);
+    }
+
+    public void RemovePauseListener()
+    {
+        b11.onClick.RemoveAllListeners();
+    }
 
     public void ControlDeath(bool x)
     {
         died = x;
     }
+    
+    private void LoadScore()
+    {
+        score = new Score();
+        if (PlayerPrefs.HasKey("hiscore"))
+        {
+            score.hiscore = PlayerPrefs.GetInt("hiscore");
+        }
+    }
 
+    private void SaveScore()
+    {
+        PlayerPrefs.SetInt("hiscore", score.hiscore);
+    }
+
+    private void ResetScore()
+    {
+        PlayerPrefs.SetInt("hiscore", 0);
+    }
+
+    public int GetScore()
+    {
+        return score.hiscore;
+    }
+
+    public void SubmitScore(int score2)
+    {
+            score.hiscore = score2;
+            SaveScore();
+    }
 
     }

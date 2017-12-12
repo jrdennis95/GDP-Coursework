@@ -95,7 +95,7 @@
     <Compile Include="Assets\Scripts\HumanAI.cs" />
     <Compile Include="Assets\Scripts\MobMovement.cs" />
     <Compile Include="Assets\Scripts\MovementScript.cs" />
-    <Compile Include="Assets\Scripts\ObjectPooler.cs" />
+    <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\ZombieLight.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
