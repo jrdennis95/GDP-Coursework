@@ -154,8 +154,8 @@ public class GameStart : MonoBehaviour {
                     script2.EndBegin();
                     script3.DeleteHuman();
                     script3.EndBegin();
-                    script4.EndBegin();
                     script4.DeleteBrains();
+                    script4.EndBegin();
                     script5.EndBegin();
                     script5.DeletePlayer();
                     script6.EndBegin();
