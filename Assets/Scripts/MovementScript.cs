@@ -31,6 +31,7 @@ public class MovementScript : MonoBehaviour {
     private float jumpSpeed = 0.0f;
     private bool begin = false;
     private bool paused;
+    private Vector2 touchOrigin;
 
     public void Init(bool started)
     {
@@ -64,7 +65,6 @@ public class MovementScript : MonoBehaviour {
         }
         cc = GameObject.FindGameObjectWithTag("Zombie").GetComponent<CollisionControl>();
         cc.Init(true);
-        Debug.Log(false);
         begin = true;
     }
 
@@ -88,10 +88,10 @@ public class MovementScript : MonoBehaviour {
             {
                 distancebetween = active[0].transform.position.z - mob.transform.position.z;
                 mobsource.volume = (1 - distancebetween * 0.1f) - 0.2f;
-                Debug.Log(mobsource.volume);
                 totalspeed = runspeed + (score * 0.05f);
                 float horizontal = 0;
-#if UNITY_STANDALONE || UNITY_WEBPLAYER
+                float vertical = 0;
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
 
                 if (Input.GetButtonDown("Jump") && control.isGrounded)
                 {

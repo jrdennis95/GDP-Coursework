@@ -30,7 +30,7 @@ public class GameStart : MonoBehaviour {
     void Awake()
     {
         Screen.SetResolution(1000, 1500, false, 120);
-#if UNITY_STANDALONE || UNITY_WEBPLAYER
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
         strafe2.gameObject.SetActive(true);
         jump2.gameObject.SetActive(true);
 #else
