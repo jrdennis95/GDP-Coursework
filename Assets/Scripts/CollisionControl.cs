@@ -103,6 +103,8 @@ public class CollisionControl : MonoBehaviour
         }
         else if (hit.gameObject.tag == "Mob")
         {
+            mobsource.Stop();
+            zombiedeathsource.Play();
             Destroy(mobscript.GetComponent<Collider>());
             anim.SetBool("dead", true);
             ms.SetDead(true);
