@@ -1619,6 +1619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb76f2511893e334ba675fa0e46dc429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitaudio: {fileID: 8300000, guid: 9929dfafdca9d404a85f7600033e5c3e, type: 3}
+  brainaudio: {fileID: 8300000, guid: 2f9b42f3837204742b2430b69b6f3d76, type: 3}
+  humandeathaudio: {fileID: 8300000, guid: 3953bcc0966405e4697c509ed6fde056, type: 3}
+  zombiedeathaudio: {fileID: 8300000, guid: 62c49772e28ea2c46bc41f506caf6a3f, type: 3}
 --- !u!137 &137453016310753742
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

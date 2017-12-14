@@ -7,21 +7,29 @@ public class CollisionControl : MonoBehaviour
 
     private CharacterController control;
     private MobMovement mobscript;
-    private GameObject mob;
     private MovementScript ms;
-    private EndlessSpawnerScript ess;
     private HumanAI ha;
     private GameStart gs;
     private Animator anim;
+    public AudioClip hitaudio, brainaudio, humandeathaudio, zombiedeathaudio;
+    private AudioSource hitsource, brainsource, humandeathsource, zombiedeathsource, mobsource;
     private bool begin = false;
 
     public void Init(bool started)
     {
         ms = GameObject.FindGameObjectWithTag("Player").GetComponent<MovementScript>();
         mobscript = GameObject.Find("Mobs").GetComponent<MobMovement>();
-        ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
         gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
         ha = GameObject.Find("Humans").GetComponent<HumanAI>();
+        hitsource = GameObject.Find("HitSound").GetComponent<AudioSource>();
+        brainsource = GameObject.Find("BrainSound").GetComponent<AudioSource>();
+        humandeathsource = GameObject.Find("HumanDeathSound").GetComponent<AudioSource>();
+        zombiedeathsource = GameObject.Find("ZombieDeathSound").GetComponent<AudioSource>();
+        mobsource = GameObject.Find("MobSound").GetComponent<AudioSource>();
+        hitsource.clip = hitaudio;
+        brainsource.clip = brainaudio;
+        humandeathsource.clip = humandeathaudio;
+        zombiedeathsource.clip = zombiedeathaudio;
         control = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         begin = true;
@@ -45,6 +53,7 @@ public class CollisionControl : MonoBehaviour
     {
         if (hit.gameObject.tag == "Brain")
         {
+            brainsource.Play();
             hit.gameObject.SetActive(false);
             ms.addScore(1);
             if (ms.GetDistanceBetween() < 3)
@@ -86,6 +95,7 @@ public class CollisionControl : MonoBehaviour
     {
         if (hit.gameObject.tag == "Human")
         {
+            humandeathsource.Play();
             ha.DeleteHuman();
             ha.NewHuman();
             ms.addScore(20);
@@ -106,7 +116,7 @@ public class CollisionControl : MonoBehaviour
                 ms.SubtractSpeed(0.01f);
             } else
             {
-                ms.SubtractSpeed(0.5f);
+                ms.SubtractSpeed(0.7f);
             }
             if (ms.GetScore() > 0)
             {
@@ -117,16 +127,19 @@ public class CollisionControl : MonoBehaviour
             }
             if (ms.GetHearts() == 3)
             {
+                hitsource.Play();
                 ms.SetHeartActive(2, false);
             }
             else if (ms.GetHearts() == 2)
             {
+                hitsource.Play();
                 anim.SetBool("damaged", false);
                 ms.SetHeartActive(2, false);
                 ms.SetHeartActive(1, false);
             }
             else if (ms.GetHearts() == 1)
             {
+                hitsource.Play();
                 anim.SetBool("damaged", true);
                 ms.SetHeartActive(2, false);
                 ms.SetHeartActive(1, false);
@@ -134,6 +147,8 @@ public class CollisionControl : MonoBehaviour
             }
             else if (ms.GetHearts() == 0)
             {
+                mobsource.Stop();
+                zombiedeathsource.Play();
                 anim.SetBool("dead", true);
                 ms.SetDead(true);
                 gs.ControlDeath(true);

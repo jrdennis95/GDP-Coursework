@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class MobMovement : MonoBehaviour {
 
-    private GameStart gs;
     private Vector3 movement;
-    private Collider collider;
-    //public GameObject originalmob;
+    private Collider ccollider;
     public GameObject mob;
-    private Transform copymob;
     private MovementScript ms;
     private List<GameObject> active;
     private float runspeed;
@@ -26,7 +23,7 @@ public class MobMovement : MonoBehaviour {
         go.transform.SetParent(transform);
         go.transform.position = transform.position;
         go.transform.tag = "Mob";
-        collider = go.transform.GetComponent<Collider>();
+        ccollider = go.transform.GetComponent<Collider>();
         active.Add(go);
         begin = true;
     }
@@ -42,14 +39,14 @@ public class MobMovement : MonoBehaviour {
             movement.x = 0;
             movement.y = 0;
             movement.z = totalspeed;
-            if (collider != null)
+            if (ccollider != null)
             {
-                collider.transform.Translate(movement * Time.deltaTime);
+                ccollider.transform.Translate(movement * Time.deltaTime);
             }
-            if (ms.GetDistanceBetween() > 6 && collider != null)
+            if (ms.GetDistanceBetween() > 6 && ccollider != null)
             {
                 movement.z = totalspeed*2;
-                collider.transform.Translate(movement * Time.deltaTime);
+                ccollider.transform.Translate(movement * Time.deltaTime);
             }
         }
     }

@@ -8,25 +8,19 @@ public class MovementScript : MonoBehaviour {
     private GameStart gs;
     private CharacterController control;
     private CollisionControl cc;
-    private EndlessSpawnerScript ess;
     private GameObject mob;
     public GameObject zombie;
-    private GameObject zombieplayer;
-    private MobMovement mobscript;
-    private BoxCollider bc;
     public Text UItext, pauseText, playText, pauseText2;
     public GameObject pausemenu;
     private Vector3 movement;
     public GameObject[] hearts;
     private Transform canvas;
-    private Image panel;
     private List<GameObject> activeHearts;
-    private Vector3 offset;
     private List<GameObject> active;
     public Button pause;
-    private bool dead, deathanimover;
-    private bool started;
-    private float gamma;
+    public AudioClip mobaudio;
+    private AudioSource mobsource, music;
+    private bool dead;
     private float distancebetween;
     public float strafespeed;
     public float runspeed;
@@ -35,12 +29,8 @@ public class MovementScript : MonoBehaviour {
     private int score;
     private int heartcount;
     private float jumpSpeed = 0.0f;
-    private float gravity = 9.8f;
     private bool begin = false;
-    private bool iphone;
     private bool paused;
-    private Vector3 lastposition;
-    private Vector2 touchOrigin;
 
     public void Init(bool started)
     {
@@ -53,20 +43,17 @@ public class MovementScript : MonoBehaviour {
         active.Add(go);
         paused = false;
         gs = GameObject.FindGameObjectWithTag("Canvas").GetComponent<GameStart>();
-        ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
         control = GameObject.FindGameObjectWithTag("Zombie").GetComponent<CharacterController>();
-        ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
-
+        mobsource.Play();
+        mobsource.volume = 0.05f;
         pause.onClick.AddListener(TaskOnClickPause);
         //GameOverImage = GameObject.Find("GameOverImage").GetComponent<GameObject>();
         score = 0;
         heartcount = 3;
-        gamma = 0;
         dead = false;
         runspeed = fixedrunspeed;
         totalspeed = fixedrunspeed;
         canvas = GameObject.FindGameObjectWithTag("Canvas").transform;
-        panel = GameObject.FindGameObjectWithTag("Panel").GetComponent<Image>();
         activeHearts = new List<GameObject>();
         for (int i = 0; i < 3; i++)
         {
@@ -82,10 +69,13 @@ public class MovementScript : MonoBehaviour {
     }
 
         void Start () {
-        touchOrigin = -Vector2.one;
         fixedrunspeed = runspeed;
             heartcount = 3;
-        }
+        mobsource = GameObject.Find("MobSound").GetComponent<AudioSource>();
+        music = GameObject.Find("Music").GetComponent<AudioSource>();
+        mobsource.clip = mobaudio;
+        mobsource.volume = 0.05f;
+    }
 
     // Update is called once per frame
     void Update () {
@@ -97,9 +87,10 @@ public class MovementScript : MonoBehaviour {
             if (dead == false && paused == false)
             {
                 distancebetween = active[0].transform.position.z - mob.transform.position.z;
+                mobsource.volume = (1 - distancebetween * 0.1f) - 0.2f;
+                Debug.Log(mobsource.volume);
                 totalspeed = runspeed + (score * 0.05f);
                 float horizontal = 0;
-                float vertical = 0;
 #if UNITY_STANDALONE || UNITY_WEBPLAYER
 
                 if (Input.GetButtonDown("Jump") && control.isGrounded)
@@ -163,7 +154,8 @@ public class MovementScript : MonoBehaviour {
     {
         if (Time.timeScale == 1 && paused == false)
         {
-            Debug.Log("Hello");
+            mobsource.Pause();
+            music.Pause();
             Time.timeScale = 0;
             playText.gameObject.SetActive(true);
             pauseText.gameObject.SetActive(false);
@@ -172,7 +164,8 @@ public class MovementScript : MonoBehaviour {
             gs.SetPauseListener();
         } else
         {
-            Debug.Log("Goodbye");
+            mobsource.Play();
+            music.Play();
             Time.timeScale = 1;
             pauseText.gameObject.SetActive(true);
             playText.gameObject.SetActive(false);

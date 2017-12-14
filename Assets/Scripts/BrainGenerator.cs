@@ -6,27 +6,21 @@ public class BrainGenerator : MonoBehaviour
 {
 
     public GameObject[] prefabs;
-    private GameStart gs;
     private Transform ground;
     private Transform groundBehind;
     private Transform player;
     private float spawnLocation = -10.5f;
     private float spawnLength = 2.0f;
-    private int maxSpawns = 3;
     private List<GameObject> activeSpawn;
-    private GameObject[] brainList;
     private int brainNo;
     private int brainsActive;
     private System.Random rnd;
     private int lastLane = 0; //left = 0, middle = 1, right = 2
-    private int randomNo;
-    private Vector3 copyposition;
     private float lastposition;
     private bool begin = false;
 
     public void Init(bool started)
     {
-        brainList = new GameObject[3];
         brainNo = 3;
         brainsActive = 0;
         activeSpawn = new List<GameObject>();
@@ -38,7 +32,6 @@ public class BrainGenerator : MonoBehaviour
 
     void Start()
     {
-        gs = GameObject.FindGameObjectWithTag("Menu").GetComponent<GameStart>();
     }
 
     // Update is called once per frame

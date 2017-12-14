@@ -4,26 +4,14 @@ using UnityEngine;
 
 public class HumanAI : MonoBehaviour {
 
-    private Vector3 movement;
-    private GameStart gs;
-    private CharacterController control;
     public GameObject human;
-    private GameObject humanobj;
     private EndlessSpawnerScript ess;
-    private MovementScript ms;
-    private HumanCollisionControl hcc;
     private List<GameObject> active;
-    private float runspeed;
-    private float jumpSpeed = 0.0f;
-    private float strafespeed;
-    private bool collided;
     private bool begin = false;
     public void Init(bool started)
     {
         active = new List<GameObject>();
-        strafespeed = 3;
         ess = GameObject.Find("EndlessSpawner").GetComponent<EndlessSpawnerScript>();
-        ms = GameObject.Find("Player").GetComponent<MovementScript>();
 
         GameObject go;
         go = Instantiate(human) as GameObject;
@@ -76,5 +64,5 @@ public class HumanAI : MonoBehaviour {
     public void StartBegin()
     {
         begin = true;
-    }
+     }
 }

@@ -5,8 +5,6 @@ using UnityEngine;
 public class EndlessSpawnerScript : MonoBehaviour {
 
     public GameObject[] prefabs;
-    private HumanAI script;
-    private GameStart gs;
     public GameObject human;
     private Transform player;
     private Transform torch;
@@ -19,9 +17,6 @@ public class EndlessSpawnerScript : MonoBehaviour {
     private List<int> spawnHistory;
     private System.Random rnd;
     private int lastPrefab = 0;
-    private int randomNo;
-    private Vector3 copyposition;
-    private BrainGenerator bg;
     private bool begin = false;
     // Use this for initialization
 
@@ -47,12 +42,10 @@ public class EndlessSpawnerScript : MonoBehaviour {
             activeSpawn[0].tag = "Behind";
             activeSpawn[5].tag = "Ground";
             activeSpawn[6].tag = "Untagged";
-            bg = FindObjectOfType<BrainGenerator>();
-        begin = true;
+            begin = true;
     }
         private void Awake()
         {
-            gs = GameObject.FindGameObjectWithTag("Menu").GetComponent<GameStart>();
         }
     void Start () {
 
@@ -85,8 +78,7 @@ public class EndlessSpawnerScript : MonoBehaviour {
         }
         go.transform.SetParent(transform);
         go.transform.position = Vector3.forward * spawnLocation;
-        copyposition = go.transform.position;
-        //bg.spawnBrains(new Vector3(copyposition.x, copyposition.y + 2, copyposition.z + 10));
+
         spawnLocation += spawnLength;
         torch = go.GetComponentInChildren<Transform>().Find("modelTorch");
         bonfire = go.GetComponentInChildren<Transform>().Find("modelBonfire");

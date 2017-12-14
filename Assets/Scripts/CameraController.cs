@@ -9,7 +9,6 @@ public class CameraController : MonoBehaviour
     private Transform ms;
     public Vector3 offset;
     private Vector3 newtar;
-    private Vector3 startingPosition;
     private Vector3 camerabehind;
     private bool begin = false;
 
@@ -17,7 +16,6 @@ public class CameraController : MonoBehaviour
     {
         ms = GameObject.FindGameObjectWithTag("Zombie").transform;
         transform.position = camerabehind;
-        startingPosition = ms.position + transform.position;
         begin = true;
     }
         // Use this for initialization

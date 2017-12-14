@@ -7,6 +7,8 @@ public class GameStart : MonoBehaviour {
 
     public Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11;
     public GameObject Menu1, Menu2, Menu3, Menu4;
+    public AudioClip music;
+    public AudioSource source, mobsource;
     public Transform sun;
     private int hiscore;
     public Text hiscoretext, environmenttext, strafe1, strafe2, jump1, jump2;
@@ -20,7 +22,6 @@ public class GameStart : MonoBehaviour {
     private CameraController script6;
     private Score score;
     public Image GameOverImage1, GameOverImage2;
-    private Transform TransformImage1, TransformImage2;
     private float Image2Fill;
     private float timer1, timer2, timer3 = 0;
     private float scale;
@@ -91,8 +92,7 @@ public class GameStart : MonoBehaviour {
 	void Start () {
         darkmode = true;
         died = false;
-        TransformImage1 = GameOverImage1.transform;
-        TransformImage2 = GameOverImage2.transform;
+        source.clip = music;
         Image2Fill = GameOverImage2.fillAmount;
         score = gameObject.AddComponent<Score>();
         LoadScore();
@@ -122,6 +122,11 @@ public class GameStart : MonoBehaviour {
         }
         if (died)
         {
+            script5.pauseText.gameObject.SetActive(false);
+            script5.playText.gameObject.SetActive(false);
+            script5.pauseText2.gameObject.SetActive(false);
+            script5.pausemenu.gameObject.SetActive(false);
+            script5.pause.onClick.RemoveAllListeners();
             if (script5.GetScore() > hiscore)
             {
                 hiscore = script5.GetScore();
@@ -187,12 +192,16 @@ public class GameStart : MonoBehaviour {
         script3.Init(true);
         script4.Init(true);
         Menu1.gameObject.SetActive(false);
+        script5.pauseText.gameObject.SetActive(true);
+        source.Play();
 
     }
 
     public void TaskOnClickPause()
     {
         Time.timeScale = 1;
+        source.Stop();
+        mobsource.Stop();
         script5.pauseText.gameObject.SetActive(true);
         script5.playText.gameObject.SetActive(false);
         script5.pauseText2.gameObject.SetActive(false);
@@ -255,6 +264,7 @@ public class GameStart : MonoBehaviour {
     }
     private void TaskOnClick7()
     {
+        source.Stop();
         if (darkmode)
         {
             sun.transform.localEulerAngles = new Vector3(210, sun.transform.localEulerAngles.y, sun.transform.localEulerAngles.z);
@@ -275,10 +285,13 @@ public class GameStart : MonoBehaviour {
         script2.Init(true);
         script3.Init(true);
         script4.Init(true);
+        script5.pauseText.gameObject.SetActive(true);
         Menu3.gameObject.SetActive(false);
+        source.Play();
     }
     private void TaskOnClick8()
     {
+        source.Stop();
         if (darkmode)
         {
             sun.transform.localEulerAngles = new Vector3(210, sun.transform.localEulerAngles.y, sun.transform.localEulerAngles.z);
@@ -326,10 +339,15 @@ public class GameStart : MonoBehaviour {
     {
         died = x;
     }
+
+    public bool GetDeath()
+    {
+        return died;
+    }
     
     private void LoadScore()
     {
-        score = new Score();
+        score = gameObject.AddComponent<Score>();
         if (PlayerPrefs.HasKey("hiscore"))
         {
             score.hiscore = PlayerPrefs.GetInt("hiscore");

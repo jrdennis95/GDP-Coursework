@@ -35,6 +35,7 @@ TagManager:
   - Jump2
   - Menu4
   - Controls
+  - Audio
   layers:
   - Default
   - TransparentFX
